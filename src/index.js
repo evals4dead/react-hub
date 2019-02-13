@@ -1,13 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
 import Router from './components/Router';
 import * as serviceWorker from './serviceWorker';
 
 const rootElement = document.getElementById('root');
 
-ReactDOM.render(<Router />, rootElement);
+const RootComponent = (
+  <BrowserRouter>
+    <Router />
+  </BrowserRouter>
+);
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
+ReactDOM.render(RootComponent, rootElement);
+
 serviceWorker.unregister();
