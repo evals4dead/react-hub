@@ -1,0 +1,10 @@
+@import '~open-color/open-color';
+@import '~include-media/dist/include-media';
+@import './material-shadow.scss';
+
+$breakpoints: (
+  small: 320px,
+  medium: 768px,
+  large: 1024px,
+  wide: 1400px,
+);
