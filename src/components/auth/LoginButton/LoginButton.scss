@@ -1,0 +1,27 @@
+@import '~styles/utils.scss';
+
+.login-button {
+    width: 400px;
+    height: 150px;
+    background: $oc-gray-2;
+    border-radius: 3px;
+    border: 1px solid $oc-gray-5;
+
+    @include material-shadow(2, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 2.5rem;
+    font-weight: 800;
+
+    &:hover {
+        background: $oc-gray-1;
+        cursor: pointer;
+    }
+
+    &:active {
+        background: $oc-gray-0;
+    }
+}

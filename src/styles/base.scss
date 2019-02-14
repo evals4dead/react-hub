@@ -1,6 +1,7 @@
 // originally written by velopert
 
 @import url('//fonts.googleapis.com/earlyaccess/notosanskr.css');
+@import './utils.scss';
 
 body {
   margin: 0;
@@ -8,6 +9,11 @@ body {
   font-family: 'Noto Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: $oc-gray-8;
+}
+
+::selection {
+  background: $oc-gray-8;
 }
 
 // box-sizing 일괄 설정
