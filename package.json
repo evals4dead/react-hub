@@ -5,17 +5,19 @@
   "dependencies": {
     "@babel/core": "7.2.2",
     "@svgr/webpack": "4.1.0",
+    "axios": "^0.18.0",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "9.0.0",
     "babel-jest": "23.6.0",
     "babel-loader": "8.0.5",
     "babel-plugin-named-asset-import": "^0.3.1",
     "babel-preset-react-app": "^7.0.1",
+    "better-react-spinkit": "^2.0.4",
     "bfj": "6.1.1",
     "case-sensitive-paths-webpack-plugin": "2.2.0",
     "classnames": "^2.2.6",
     "css-loader": "1.0.0",
-    "dotenv": "6.0.0",
+    "dotenv": "^6.2.0",
     "dotenv-expand": "4.2.0",
     "eslint": "5.12.0",
     "eslint-config-react-app": "^3.0.7",
@@ -29,11 +31,16 @@
     "fs-extra": "7.0.1",
     "html-webpack-plugin": "4.0.0-alpha.2",
     "identity-obj-proxy": "3.0.0",
+    "immer": "^2.0.0",
     "include-media": "^1.4.9",
     "jest": "23.6.0",
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
+    "koa": "^2.7.0",
+    "koa-body": "^4.0.8",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^7.4.0",
     "mini-css-extract-plugin": "0.5.0",
     "node-sass": "^4.11.0",
     "open-color": "^1.6.3",
@@ -47,7 +54,12 @@
     "react-app-polyfill": "^0.2.1",
     "react-dev-utils": "^7.0.3",
     "react-dom": "^16.8.1",
+    "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
+    "react-spinners": "^0.5.1",
+    "redux": "^4.0.1",
+    "redux-actions": "^2.6.4",
+    "redux-pender": "^2.0.12",
     "resolve": "1.10.0",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.1",
@@ -60,6 +72,7 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "start:server": "npx nodemon ./server/app.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js"
   },
@@ -121,5 +134,9 @@
     "presets": [
       "react-app"
     ]
-  }
+  },
+  "proxy": "http://localhost:4000",
+  "main": "index.js",
+  "repository": "https://github.com/evals4dead/react-hub",
+  "license": "MIT"
 }
