@@ -6,6 +6,7 @@ import Title from 'components/common/Title';
 import RepoListWrapper from 'components/repo/RepoListWrapper';
 import RepoList from 'components/repo/RepoList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
+import Pager from 'components/common/Pager';
 
 class MyPageContainer extends Component {
   componentDidMount() {
@@ -21,13 +22,25 @@ class MyPageContainer extends Component {
     }
   };
 
+  hoverPerPage = ({ hovered }) => {
+    const { RepoActions } = this.props;
+    RepoActions.hoverPerPage({ hovered });
+  };
+
+  selectPerPage = ({ perPage }) => {
+    const { RepoActions } = this.props;
+    RepoActions.selectPerPage({ perPage });
+  };
+
   render() {
-    const { repoList } = this.props;
+    const { repoList, pagingInfo } = this.props;
+    const { hoverPerPage, selectPerPage } = this;
     if (repoList.length === 0) return <LoadingSpinner />;
     return (
       <RepoListWrapper>
         <Title title="My repo list" />
         <RepoList list={repoList} />
+        <Pager pagingInfo={pagingInfo} onHover={hoverPerPage} onSelect={selectPerPage} />
       </RepoListWrapper>
     );
   }
@@ -36,6 +49,7 @@ class MyPageContainer extends Component {
 export default connect(
   ({ repo }) => ({
     repoList: repo.list,
+    pagingInfo: repo.pagingInfo,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),
