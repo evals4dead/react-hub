@@ -1,0 +1,42 @@
+@import '~styles/utils.scss';
+
+.RepoInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  border: 1px solid $oc-gray-3;
+  border-radius: 3px;
+  .Lang {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+  }
+
+  .pubPriv {
+    font-size: 2rem;
+    font-weight: 600;
+    color: white;
+
+    &.red {
+      color: $oc-red-8;
+    }
+    &.blue {
+      color: $oc-blue-8;
+    }
+  }
+
+  .fork {
+    display: flex;
+    align-items: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+    img {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      margin-left: 1rem;
+    }
+  }
+}

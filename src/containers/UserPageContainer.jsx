@@ -93,12 +93,12 @@ class UserPageContainer extends Component {
   }
 
   render() {
-    const { repoList, pagingInfo, nextList } = this.props;
+    const { repoList, pagingInfo, nextList, username } = this.props;
     const { handleClickPerPage, selectPerPage, setPage } = this;
     if (repoList.length === 0) return <LoadingSpinner />;
     return (
       <RepoListWrapper>
-        <Title title="My repo list" />
+        <Title title={`${username}'s repo list`} />
         <RepoList list={repoList} />
         <Pager
           pagingInfo={pagingInfo}

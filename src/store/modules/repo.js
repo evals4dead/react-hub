@@ -10,6 +10,7 @@ const SET_PAGE = 'repo/SET_PAGE';
 const NEXT_REPO_LIST = 'repo/NEXT_REPO_LIST';
 const SHOW_NEXT_REPO_LIST = 'repo/SHOW_NEXT_REPO_LIST';
 const GET_REPO = 'repo/GET_REPO';
+const INITIALIZE_REPO = 'repo/INITIALIZE_REPO';
 
 export const repoActions = {
   repoList: createAction(REPO_LIST, repoAPI.repoList),
@@ -19,6 +20,7 @@ export const repoActions = {
   nextRepoList: createAction(NEXT_REPO_LIST, repoAPI.repoList),
   showNextRepoList: createAction(SHOW_NEXT_REPO_LIST, payload => payload),
   getRepo: createAction(GET_REPO, repoAPI.repo),
+  initializeRepo: createAction(INITIALIZE_REPO, payload => payload),
 };
 
 const initialState = {
@@ -60,6 +62,11 @@ const reducer = handleActions(
         const { nextList } = action.payload;
         draft.list = nextList;
         draft.nextList = [];
+      });
+    },
+    [INITIALIZE_REPO]: (state, action) => {
+      return produce(state, draft => {
+        draft.repo = null;
       });
     },
   },
