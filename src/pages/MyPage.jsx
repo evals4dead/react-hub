@@ -1,7 +1,8 @@
 import React from 'react';
+import MyPageContainer from 'containers/MyPageContainer';
 
 const MyPage = () => {
-  return <div>My Page</div>;
+  return <MyPageContainer />;
 };
 
 export default MyPage;
