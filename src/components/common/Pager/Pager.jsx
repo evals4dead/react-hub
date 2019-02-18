@@ -1,5 +1,6 @@
 import React from 'react';
 import classnames from 'classnames/bind';
+import debounce from 'lodash/debounce';
 import styles from './Pager.scss';
 
 const cx = classnames.bind(styles);
@@ -12,7 +13,9 @@ const Pager = ({ pagingInfo, onHover, onSelect }) => {
         <div
           className={cx('Selector')}
           onMouseEnter={e => onHover({ hovered: true })}
-          onMouseLeave={e => onHover({ hovered: false })}
+          onMouseLeave={e => {
+            debounce(() => onHover({ hovered: false }), 500);
+          }}
         >
           <div className={cx('Item', pagingInfo.perPage.visible === 10 && 'visible')}>10</div>
           <div className={cx('Item', pagingInfo.perPage.visible === 15 && 'visible')}>15</div>

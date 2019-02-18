@@ -14,9 +14,33 @@ class MyPageContainer extends Component {
   }
 
   getRepoList = async () => {
+    const {
+      RepoActions,
+      pagingInfo: {
+        currentPage,
+        perPage: { visible },
+      },
+    } = this.props;
+    try {
+      await RepoActions.repoList({
+        accessToken: localStorage.getItem('accessToken'),
+        page: currentPage,
+        perPage: visible,
+      });
+      this.getNextPage({ nextPage: currentPage + 1, perPage: visible });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  getNextPage = async ({ nextPage, perPage }) => {
     const { RepoActions } = this.props;
     try {
-      await RepoActions.repoList({ accessToken: localStorage.getItem('accessToken') });
+      await RepoActions.nextRepoList({
+        accessToken: localStorage.getItem('accessToken'),
+        page: nextPage,
+        perPage,
+      });
     } catch (e) {
       console.log(e);
     }
@@ -50,6 +74,7 @@ export default connect(
   ({ repo }) => ({
     repoList: repo.list,
     pagingInfo: repo.pagingInfo,
+    nextList: repo.nextList,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),
