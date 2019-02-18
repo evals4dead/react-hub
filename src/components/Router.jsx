@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { LoginPage, MyPage, NotFoundPage } from 'pages';
+import { LoginPage, UserPage, RepoPage, NotFoundPage } from 'pages';
 import Base from 'containers/Base';
 
 class Router extends Component {
@@ -9,7 +9,8 @@ class Router extends Component {
       <>
         <Switch>
           <Route path="/login" component={LoginPage} />
-          <Route path="/mypage" component={MyPage} />
+          <Route exact={true} path="/:username" component={UserPage} />
+          <Route exact={true} path="/:username/:reponame" component={RepoPage} />
           <Route component={NotFoundPage} />
         </Switch>
         <Base />

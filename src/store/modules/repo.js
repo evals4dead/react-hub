@@ -9,6 +9,7 @@ const SELECT_PER_PAGE = 'repo/SELECT_PER_PAGE';
 const SET_PAGE = 'repo/SET_PAGE';
 const NEXT_REPO_LIST = 'repo/NEXT_REPO_LIST';
 const SHOW_NEXT_REPO_LIST = 'repo/SHOW_NEXT_REPO_LIST';
+const GET_REPO = 'repo/GET_REPO';
 
 export const repoActions = {
   repoList: createAction(REPO_LIST, repoAPI.repoList),
@@ -17,6 +18,7 @@ export const repoActions = {
   setPage: createAction(SET_PAGE, payload => payload),
   nextRepoList: createAction(NEXT_REPO_LIST, repoAPI.repoList),
   showNextRepoList: createAction(SHOW_NEXT_REPO_LIST, payload => payload),
+  getRepo: createAction(GET_REPO, repoAPI.repo),
 };
 
 const initialState = {
@@ -29,6 +31,7 @@ const initialState = {
     },
   },
   nextList: [],
+  repo: null,
 };
 
 const reducer = handleActions(
@@ -79,6 +82,15 @@ export default applyPenders(reducer, [
       return produce(state, draft => {
         const { data: repoList } = action.payload;
         draft.nextList = repoList;
+      });
+    },
+  },
+  {
+    type: GET_REPO,
+    onSuccess: (state, action) => {
+      return produce(state, draft => {
+        const { data: repo } = action.payload;
+        draft.repo = repo;
       });
     },
   },

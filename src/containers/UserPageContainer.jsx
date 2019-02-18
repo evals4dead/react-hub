@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { repoActions } from 'store/modules/repo';
+import { userActions } from 'store/modules/user';
 import Title from 'components/common/Title';
 import RepoListWrapper from 'components/repo/RepoListWrapper';
 import RepoList from 'components/repo/RepoList';
 import LoadingSpinner from 'components/common/LoadingSpinner';
 import Pager from 'components/common/Pager';
 
-class MyPageContainer extends Component {
+class UserPageContainer extends Component {
   componentDidMount() {
     const {
       pagingInfo: {
@@ -20,12 +21,13 @@ class MyPageContainer extends Component {
   }
 
   getRepoList = async ({ page, perPage }) => {
-    const { RepoActions } = this.props;
+    const { RepoActions, username } = this.props;
     try {
       await RepoActions.repoList({
         accessToken: localStorage.getItem('accessToken'),
         page,
         perPage,
+        username,
       });
       this.nextRepoList({ page: page + 1, perPage });
     } catch (e) {
@@ -34,12 +36,13 @@ class MyPageContainer extends Component {
   };
 
   nextRepoList = async ({ page, perPage }) => {
-    const { RepoActions } = this.props;
+    const { RepoActions, username } = this.props;
     try {
       await RepoActions.nextRepoList({
         accessToken: localStorage.getItem('accessToken'),
         page,
         perPage,
+        username,
       });
     } catch (e) {
       console.log(e);
@@ -110,12 +113,14 @@ class MyPageContainer extends Component {
 }
 
 export default connect(
-  ({ repo }) => ({
+  ({ repo, user }) => ({
     repoList: repo.list,
     pagingInfo: repo.pagingInfo,
     nextList: repo.nextList,
+    user: user.user,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),
+    UserActions: bindActionCreators(userActions, dispatch),
   })
-)(MyPageContainer);
+)(UserPageContainer);

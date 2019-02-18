@@ -2,49 +2,49 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import {userActions} from '../store/modules/user'
-
+import { userActions } from '../store/modules/user';
 
 class Base extends Component {
-
-    componentDidMount() {
-        const accessToken = localStorage.getItem('accessToken');
-        if(!accessToken) {
-            this.props.history.push('/login');
-            return;
-        };
-
-        this.getMyInfo();
+  componentDidMount() {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      this.props.history.push('/login');
+      return;
     }
 
-    getMyInfo = async () => {
-        const { UserActions } = this.props;
+    this.getMyInfo();
+  }
 
-        try {
-            await UserActions.getMyInfo({accessToken: localStorage.getItem('accessToken')});
-        } catch(e) {
-            console.log(e);
-            this.props.history.push('/login');
-        }
+  getMyInfo = async () => {
+    const { UserActions } = this.props;
+
+    try {
+      await UserActions.getMyInfo({ accessToken: localStorage.getItem('accessToken') });
+    } catch (e) {
+      console.log(e);
+      this.props.history.push('/login');
     }
-    
+  };
 
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps.loggedIn !== this.props.loggedIn) {
-            this.props.history.push('/mypage');
-        }
-    }   
-
-    render() {
-        return null;
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.loggedIn !== this.props.loggedIn) {
+      this.props.history.push(`/${this.props.user.login}`);
     }
+  }
+
+  render() {
+    return null;
+  }
 }
 
-export default withRouter(connect(
-    ({auth}) => ({
-        loggedIn: auth.loggedIn
+export default withRouter(
+  connect(
+    ({ auth, user }) => ({
+      loggedIn: auth.loggedIn,
+      user: user.user,
     }),
-    (dispatch) => ({
-        UserActions: bindActionCreators(userActions, dispatch)
+    dispatch => ({
+      UserActions: bindActionCreators(userActions, dispatch),
     })
-)(Base));
+  )(Base)
+);

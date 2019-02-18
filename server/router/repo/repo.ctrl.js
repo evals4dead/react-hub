@@ -13,9 +13,26 @@ module.exports.repoList = async ctx => {
     per_page = 10;
   }
 
-  try {
-    const response = await axios.get(`/user/repos?page=${page}&per_page=${per_page}`);
+  const { username } = ctx.params;
 
+  try {
+    const response = await axios.get(`/users/${username}/repos?page=${page}&per_page=${per_page}`);
+
+    ctx.body = response.data;
+    ctx.status = 200;
+  } catch (e) {
+    ctx.throw(e, 500);
+  }
+};
+
+module.exports.repo = async ctx => {
+  const { accesstoken: accessToken } = ctx.headers;
+  const axios = createAxios({ accessToken });
+
+  const { username, reponame } = ctx.params;
+
+  try {
+    const response = await axios.get(`/repos/${username}/${reponame}`);
     ctx.body = response.data;
     ctx.status = 200;
   } catch (e) {
