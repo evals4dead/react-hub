@@ -5,7 +5,7 @@ import styles from './Pager.scss';
 
 const cx = classnames.bind(styles);
 
-const Pager = ({ pagingInfo, onClickPerPage, onSelect, setPage }) => {
+const Pager = ({ pagingInfo, onClickPerPage, onSelect, setPage, nextList }) => {
   return (
     <div className={cx('Pager')}>
       <div
@@ -38,8 +38,8 @@ const Pager = ({ pagingInfo, onClickPerPage, onSelect, setPage }) => {
         </div>
       </div>
       <div
-        className={cx('PagerButton', 'Next')}
-        onClick={debounce(e => setPage({ page: pagingInfo.currentPage + 1 }), 300)}
+        className={cx('PagerButton', 'Next', nextList.length === 0 && 'disabled')}
+        onClick={debounce(e => nextList.length !== 0 && setPage({ page: pagingInfo.currentPage + 1 }), 300)}
       >
         next
       </div>

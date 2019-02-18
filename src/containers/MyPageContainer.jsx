@@ -27,9 +27,36 @@ class MyPageContainer extends Component {
         page,
         perPage,
       });
+      this.nextRepoList({ page: page + 1, perPage });
     } catch (e) {
       console.log(e);
     }
+  };
+
+  nextRepoList = async ({ page, perPage }) => {
+    const { RepoActions } = this.props;
+    try {
+      await RepoActions.nextRepoList({
+        accessToken: localStorage.getItem('accessToken'),
+        page,
+        perPage,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  showNextRepoList = () => {
+    const {
+      RepoActions,
+      nextList,
+      pagingInfo: {
+        currentPage,
+        perPage: { visible },
+      },
+    } = this.props;
+    RepoActions.showNextRepoList({ nextList });
+    this.nextRepoList({ page: currentPage + 1, perPage: visible });
   };
 
   handleClickPerPage = ({ clicked }) => {
@@ -49,7 +76,11 @@ class MyPageContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.pagingInfo.currentPage !== this.props.pagingInfo.currentPage) {
-      this.getRepoList({ page: this.props.pagingInfo.currentPage, perPage: this.props.pagingInfo.perPage.visible });
+      if (prevProps.pagingInfo.currentPage > this.props.pagingInfo.currentPage) {
+        this.getRepoList({ page: this.props.pagingInfo.currentPage, perPage: this.props.pagingInfo.perPage.visible });
+      } else {
+        this.showNextRepoList();
+      }
     }
 
     if (prevProps.pagingInfo.perPage.visible !== this.props.pagingInfo.perPage.visible) {
@@ -59,14 +90,20 @@ class MyPageContainer extends Component {
   }
 
   render() {
-    const { repoList, pagingInfo } = this.props;
+    const { repoList, pagingInfo, nextList } = this.props;
     const { handleClickPerPage, selectPerPage, setPage } = this;
     if (repoList.length === 0) return <LoadingSpinner />;
     return (
       <RepoListWrapper>
         <Title title="My repo list" />
         <RepoList list={repoList} />
-        <Pager pagingInfo={pagingInfo} onClickPerPage={handleClickPerPage} onSelect={selectPerPage} setPage={setPage} />
+        <Pager
+          pagingInfo={pagingInfo}
+          onClickPerPage={handleClickPerPage}
+          onSelect={selectPerPage}
+          setPage={setPage}
+          nextList={nextList}
+        />
       </RepoListWrapper>
     );
   }
@@ -76,6 +113,7 @@ export default connect(
   ({ repo }) => ({
     repoList: repo.list,
     pagingInfo: repo.pagingInfo,
+    nextList: repo.nextList,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),
