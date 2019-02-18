@@ -1,31 +1,21 @@
 import React from 'react';
-import classnames from 'classnames/bind';
 import debounce from 'lodash/debounce';
+import classnames from 'classnames/bind';
 import styles from './Pager.scss';
 
 const cx = classnames.bind(styles);
 
-const Pager = ({ pagingInfo, onHover, onSelect }) => {
+const Pager = ({ pagingInfo, onClickPerPage, onSelect, setPage }) => {
   return (
     <div className={cx('Pager')}>
-      <div className={cx('PagerButton')}>prev</div>
+      <div
+        className={cx('PagerButton', pagingInfo.currentPage === 1 && 'disabled')}
+        onClick={debounce(e => pagingInfo.currentPage > 1 && setPage({ page: pagingInfo.currentPage - 1 }), 300)}
+      >
+        prev
+      </div>
       <div className={cx('PerPage')}>
-        <div
-          className={cx('Selector')}
-          onMouseEnter={e => onHover({ hovered: true })}
-          onMouseLeave={e => {
-            debounce(() => onHover({ hovered: false }), 500);
-          }}
-        >
-          <div className={cx('Item', pagingInfo.perPage.visible === 10 && 'visible')}>10</div>
-          <div className={cx('Item', pagingInfo.perPage.visible === 15 && 'visible')}>15</div>
-          <div className={cx('Item', pagingInfo.perPage.visible === 20 && 'visible')}>20</div>
-        </div>
-        <div
-          className={cx('PerPageItems', pagingInfo.perPage.hovered && 'visible')}
-          onMouseEnter={e => onHover({ hovered: true })}
-          onMouseLeave={e => onHover({ hovered: false })}
-        >
+        <div className={cx('PerPageItems', pagingInfo.perPage.clicked && 'visible')}>
           <div className={cx('Item')} onClick={e => onSelect({ perPage: 10 })}>
             10
           </div>
@@ -36,8 +26,23 @@ const Pager = ({ pagingInfo, onHover, onSelect }) => {
             20
           </div>
         </div>
+        <div
+          className={cx('Selector')}
+          onClick={e => {
+            onClickPerPage({ clicked: !pagingInfo.perPage.clicked });
+          }}
+        >
+          <div className={cx('Item', pagingInfo.perPage.visible === 10 && 'visible')}>10</div>
+          <div className={cx('Item', pagingInfo.perPage.visible === 15 && 'visible')}>15</div>
+          <div className={cx('Item', pagingInfo.perPage.visible === 20 && 'visible')}>20</div>
+        </div>
       </div>
-      <div className={cx('PagerButton', 'Next')}>next</div>
+      <div
+        className={cx('PagerButton', 'Next')}
+        onClick={debounce(e => setPage({ page: pagingInfo.currentPage + 1 }), 300)}
+      >
+        next
+      </div>
     </div>
   );
 };

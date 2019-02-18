@@ -10,35 +10,21 @@ import Pager from 'components/common/Pager';
 
 class MyPageContainer extends Component {
   componentDidMount() {
-    this.getRepoList();
-  }
-
-  getRepoList = async () => {
     const {
-      RepoActions,
       pagingInfo: {
         currentPage,
         perPage: { visible },
       },
     } = this.props;
+    this.getRepoList({ page: currentPage, perPage: visible });
+  }
+
+  getRepoList = async ({ page, perPage }) => {
+    const { RepoActions } = this.props;
     try {
       await RepoActions.repoList({
         accessToken: localStorage.getItem('accessToken'),
-        page: currentPage,
-        perPage: visible,
-      });
-      this.getNextPage({ nextPage: currentPage + 1, perPage: visible });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  getNextPage = async ({ nextPage, perPage }) => {
-    const { RepoActions } = this.props;
-    try {
-      await RepoActions.nextRepoList({
-        accessToken: localStorage.getItem('accessToken'),
-        page: nextPage,
+        page,
         perPage,
       });
     } catch (e) {
@@ -46,9 +32,9 @@ class MyPageContainer extends Component {
     }
   };
 
-  hoverPerPage = ({ hovered }) => {
+  handleClickPerPage = ({ clicked }) => {
     const { RepoActions } = this.props;
-    RepoActions.hoverPerPage({ hovered });
+    RepoActions.clickPerPage({ clicked });
   };
 
   selectPerPage = ({ perPage }) => {
@@ -56,15 +42,31 @@ class MyPageContainer extends Component {
     RepoActions.selectPerPage({ perPage });
   };
 
+  setPage = ({ page }) => {
+    const { RepoActions } = this.props;
+    RepoActions.setPage({ page });
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.pagingInfo.currentPage !== this.props.pagingInfo.currentPage) {
+      this.getRepoList({ page: this.props.pagingInfo.currentPage, perPage: this.props.pagingInfo.perPage.visible });
+    }
+
+    if (prevProps.pagingInfo.perPage.visible !== this.props.pagingInfo.perPage.visible) {
+      this.getRepoList({ page: 1, perPage: this.props.pagingInfo.perPage.visible });
+      this.setPage({ page: 1 });
+    }
+  }
+
   render() {
     const { repoList, pagingInfo } = this.props;
-    const { hoverPerPage, selectPerPage } = this;
+    const { handleClickPerPage, selectPerPage, setPage } = this;
     if (repoList.length === 0) return <LoadingSpinner />;
     return (
       <RepoListWrapper>
         <Title title="My repo list" />
         <RepoList list={repoList} />
-        <Pager pagingInfo={pagingInfo} onHover={hoverPerPage} onSelect={selectPerPage} />
+        <Pager pagingInfo={pagingInfo} onClickPerPage={handleClickPerPage} onSelect={selectPerPage} setPage={setPage} />
       </RepoListWrapper>
     );
   }
@@ -74,7 +76,6 @@ export default connect(
   ({ repo }) => ({
     repoList: repo.list,
     pagingInfo: repo.pagingInfo,
-    nextList: repo.nextList,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),

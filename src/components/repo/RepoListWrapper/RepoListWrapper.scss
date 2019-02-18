@@ -6,9 +6,7 @@
 
   align-items: center;
 
-  height: calc(100vh);
+  height: auto;
 
-  @include media('height<748px') {
-    height: auto;
-  }
+  position: relative;
 }

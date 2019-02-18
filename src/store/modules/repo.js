@@ -4,15 +4,15 @@ import { applyPenders } from 'redux-pender/lib/utils';
 import * as repoAPI from 'api/repo';
 
 const REPO_LIST = 'repo/REPO_LIST';
-const HOVER_PER_PAGE = 'repo/HOVER_PER_PAGE';
+const CLICK_PER_PAGE = 'repo/CLICK_PER_PAGE';
 const SELECT_PER_PAGE = 'repo/SELECT_PER_PAGE';
-const NEXT_REPO_LIST = 'repo/NEXT_REPO_LIST';
+const SET_PAGE = 'repo/SET_PAGE';
 
 export const repoActions = {
   repoList: createAction(REPO_LIST, repoAPI.repoList),
-  hoverPerPage: createAction(HOVER_PER_PAGE, payload => payload),
+  clickPerPage: createAction(CLICK_PER_PAGE, payload => payload),
   selectPerPage: createAction(SELECT_PER_PAGE, payload => payload),
-  nextRepoList: createAction(NEXT_REPO_LIST, repoAPI.repoList),
+  setPage: createAction(SET_PAGE, payload => payload),
 };
 
 const initialState = {
@@ -21,25 +21,30 @@ const initialState = {
     currentPage: 1,
     perPage: {
       visible: 10,
-      hovered: false,
+      clicked: false,
     },
   },
-  nextList: [],
 };
 
 const reducer = handleActions(
   {
-    [HOVER_PER_PAGE]: (state, action) => {
+    [CLICK_PER_PAGE]: (state, action) => {
       return produce(state, draft => {
-        const { hovered } = action.payload;
-        draft.pagingInfo.perPage.hovered = hovered;
+        const { clicked } = action.payload;
+        draft.pagingInfo.perPage.clicked = clicked;
       });
     },
     [SELECT_PER_PAGE]: (state, action) => {
       return produce(state, draft => {
         const { perPage } = action.payload;
         draft.pagingInfo.perPage.visible = perPage;
-        draft.pagingInfo.perPage.hovered = false;
+        draft.pagingInfo.perPage.clicked = false;
+      });
+    },
+    [SET_PAGE]: (state, action) => {
+      return produce(state, draft => {
+        const { page } = action.payload;
+        draft.pagingInfo.currentPage = page;
       });
     },
   },
@@ -53,16 +58,6 @@ export default applyPenders(reducer, [
       return produce(state, draft => {
         const { data: repoList } = action.payload;
         draft.list = repoList;
-        draft.pagingInfo.currentPage += 1;
-      });
-    },
-  },
-  {
-    type: NEXT_REPO_LIST,
-    onSuccess: (state, action) => {
-      return produce(state, draft => {
-        const { data: repoList } = action.payload;
-        draft.nextList = repoList;
       });
     },
   },
