@@ -1,7 +1,11 @@
 import React from 'react';
+import NotFoundContainer from 'containers/NotFoundContainer';
 
-const NotFoundPage = () => {
-  return <div>404 NotFound Page</div>;
+const NotFoundPage = ({ staticContext }) => {
+  if (staticContext) {
+    staticContext.isNotFound = true;
+  }
+  return <NotFoundContainer />;
 };
 
 export default NotFoundPage;

@@ -24,7 +24,6 @@ class UserPageContainer extends Component {
     const { RepoActions, username } = this.props;
     try {
       await RepoActions.repoList({
-        accessToken: localStorage.getItem('accessToken'),
         page,
         perPage,
         username,
@@ -39,7 +38,6 @@ class UserPageContainer extends Component {
     const { RepoActions, username } = this.props;
     try {
       await RepoActions.nextRepoList({
-        accessToken: localStorage.getItem('accessToken'),
         page,
         perPage,
         username,

@@ -8,7 +8,8 @@ class Router extends Component {
     return (
       <>
         <Switch>
-          <Route path="/login" component={LoginPage} />
+          <Route path="/auth/login" component={LoginPage} />
+          <Route path="/notfound" component={NotFoundPage} />
           <Route exact={true} path="/:username" component={UserPage} />
           <Route exact={true} path="/:username/:reponame" component={RepoPage} />
           <Route component={NotFoundPage} />

@@ -1,15 +1,7 @@
 import axios from 'axios';
+// import axios from 'lib/client';
 
-export const repoList = ({ accessToken, page, perPage, username }) =>
-  axios.get(`/api/repo/${username}?page=${page}&per_page=${perPage}`, {
-    headers: {
-      accessToken,
-    },
-  });
+export const repoList = ({ page, perPage, username }) =>
+  axios.get(`/api/repo/${username}?page=${page}&per_page=${perPage}`);
 
-export const repo = ({ accessToken, username, reponame }) =>
-  axios.get(`/api/repo/${username}/${reponame}`, {
-    headers: {
-      accessToken,
-    },
-  });
+export const repo = ({ username, reponame }) => axios.get(`/api/repo/${username}/${reponame}`);

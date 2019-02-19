@@ -34,6 +34,9 @@ const initialState = {
   },
   nextList: [],
   repo: null,
+  error: {
+    status: null,
+  },
 };
 
 const reducer = handleActions(
@@ -82,6 +85,14 @@ export default applyPenders(reducer, [
         draft.list = repoList;
       });
     },
+    onFailure: (state, action) => {
+      return produce(state, draft => {
+        const { status } = action.payload.response;
+        if (status === 404) {
+          draft.error.status = 404;
+        }
+      });
+    },
   },
   {
     type: NEXT_REPO_LIST,
@@ -98,6 +109,14 @@ export default applyPenders(reducer, [
       return produce(state, draft => {
         const { data: repo } = action.payload;
         draft.repo = repo;
+      });
+    },
+    onFailure: (state, action) => {
+      return produce(state, draft => {
+        const { status } = action.payload.response;
+        if (status === 404) {
+          draft.error.status = 404;
+        }
       });
     },
   },

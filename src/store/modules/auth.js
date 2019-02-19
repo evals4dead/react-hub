@@ -7,34 +7,41 @@ const SET_LOGGED_IN = 'auth/SET_LOGGED_IN';
 const GET_ACCESS_TOKEN = 'auth/GET_ACCESS_TOKEN';
 
 export const authActions = {
-    setLoggedIn: createAction(SET_LOGGED_IN, payload => payload),
-    getAccessToken: createAction(GET_ACCESS_TOKEN, authAPI.getAccessToken)
+  setLoggedIn: createAction(SET_LOGGED_IN, payload => payload),
+  getAccessToken: createAction(GET_ACCESS_TOKEN, authAPI.getAccessToken),
 };
 
 const initialState = {
-    loggedIn: false,
-    accessToken: null
+  loggedIn: false,
+  accessToken: null,
+  username: null,
 };
 
-const reducer = handleActions({
+const reducer = handleActions(
+  {
     [SET_LOGGED_IN]: (state, action) => {
-        return produce(state, draft => {
-            const { loggedIn } = action.payload;
-            draft.loggedIn = loggedIn;
-        })
-    }
-}, initialState);
+      return produce(state, draft => {
+        const { loggedIn } = action.payload;
+        draft.loggedIn = loggedIn;
+      });
+    },
+  },
+  initialState
+);
 
 export default applyPenders(reducer, [
-    {
-        type: GET_ACCESS_TOKEN,
-        onSuccess: (state, action) => {
-            return produce(state, draft => {
-                const { data: { accessToken } } = action.payload;
-                if(accessToken) {
-                    draft.accessToken = accessToken;
-                }
-            })
+  {
+    type: GET_ACCESS_TOKEN,
+    onSuccess: (state, action) => {
+      return produce(state, draft => {
+        const {
+          data: { logged, username },
+        } = action.payload;
+        if (logged) {
+          draft.username = username;
+          draft.loggedIn = logged;
         }
-    }
+      });
+    },
+  },
 ]);

@@ -41,6 +41,7 @@
     "koa-body": "^4.0.8",
     "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
+    "koa-static": "^5.0.0",
     "lodash": "^4.17.11",
     "mini-css-extract-plugin": "0.5.0",
     "node-sass": "^4.11.0",
@@ -75,6 +76,7 @@
     "start": "node scripts/start.js",
     "start:server": "npx nodemon ./server/app.js",
     "build": "node scripts/build.js",
+    "build:server": "node scripts/build.server.js",
     "test": "node scripts/test.js"
   },
   "eslintConfig": {

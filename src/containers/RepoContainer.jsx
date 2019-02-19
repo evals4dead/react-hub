@@ -22,7 +22,7 @@ class RepoContainer extends Component {
     const { RepoActions, username, reponame } = this.props;
 
     try {
-      await RepoActions.getRepo({ accessToken: localStorage.getItem('accessToken'), username, reponame });
+      await RepoActions.getRepo({ username, reponame });
     } catch (e) {
       console.log(e);
     }
