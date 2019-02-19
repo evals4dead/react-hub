@@ -2,7 +2,10 @@ const { createAxios } = require('../../lib/axios');
 
 module.exports.getMyInfo = async ctx => {
   const { access_token: accessToken } = ctx.request;
-  console.log(accessToken);
+  if(!accessToken) {
+    ctx.status = 401;
+    return;
+  }
   const axios = createAxios({ accessToken });
   try {
     const response = await axios.get('/user');
@@ -12,6 +15,7 @@ module.exports.getMyInfo = async ctx => {
     };
     ctx.status = 200;
   } catch (e) {
+    // console.log(e);
     ctx.throw(e, 500);
   }
 };

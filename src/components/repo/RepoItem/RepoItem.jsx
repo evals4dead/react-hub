@@ -7,7 +7,7 @@ const cx = classnames.bind(styles);
 
 const RepoItem = ({ repo }) => {
   return (
-    <Link to={`/${repo.owner.login}/${repo.name}`} className={cx('RepoItem')}>
+    <Link to={`/@${repo.owner.login}/${repo.name}`} className={cx('RepoItem')}>
       {repo.name}
     </Link>
   );

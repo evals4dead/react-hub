@@ -27,7 +27,7 @@ class AuthContainer extends Component {
 
       if (code) {
         console.log('process');
-        this.loginProcess({ code });
+        this.getAccessToken({code});
       }
     }
   }
@@ -37,15 +37,6 @@ class AuthContainer extends Component {
   //     this.props.history.push(`/${this.props.user.login}`);
   //   }
   // }
-
-  loginProcess = async ({ code }) => {
-    console.log('login process');
-    try {
-      await this.getAccessToken({ code });
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   getAccessToken = async ({ code }) => {
     const { AuthActions } = this.props;

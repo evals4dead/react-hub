@@ -14,17 +14,16 @@ const app = new Koa();
 const router = new Router();
 
 const reactBuildDir = path.join(__dirname, '../build');
-const reactIndex = path.join(__dirname, '../build/index.html');
-const indexHtml = fs.readFileSync(reactIndex, { encoding: 'utf8' });
 
 router.use('/api', apiRouter.routes());
-router.get('/', ssr);
+// router.get('/', ssr);
 
 app.use(bodyParser());
 app.use(accessTokenMiddleware);
 
 app.use(router.routes()).use(router.allowedMethods());
 app.use(serve(reactBuildDir));
+console.log('at', app.context.state);
 app.use(ssr);
 // app.use(ctx => {
 //   ctx.body = indexHtml;

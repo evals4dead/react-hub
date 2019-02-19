@@ -3,20 +3,18 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { userActions } from 'store/modules/user';
-import { baseActions } from '../store/modules/base';
 
-let shouldCancel = typeof window !== 'undefined' && window.__PRELOADED_STATE__;
 
 class Base extends React.Component {
   componentDidMount() {
-    // this.props.BaseActions.setShouldCancel({ shouldCancel: true });
     const { history } = this.props;
     this.unlisten = history.listen(this.handleChange);
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken && !this.props.location.pathname.includes('/auth/login')) {
-      this.props.history.push('/auth/login');
+      window.location.replace('/auth/login');
       return;
     }
+    
     this.getMyInfo();
   }
 
@@ -31,12 +29,17 @@ class Base extends React.Component {
   }
 
   getMyInfo = async () => {
-    const { UserActions } = this.props;
+    const { UserActions, location } = this.props;
 
     try {
       await UserActions.getMyInfo();
+      if(localStorage.getItem('access_token') && location.pathname.includes('/auth/login')) {
+        this.props.history.push(`/@${this.props.user.login}`);
+        return;
+      }
     } catch (e) {
       console.log(e);
+      localStorage.removeItem('access_token');
       this.props.history.push('/auth/login');
     }
   };
@@ -67,16 +70,14 @@ class Base extends React.Component {
 
 export default withRouter(
   connect(
-    ({ auth, user, repo, base }) => ({
+    ({ auth, user, repo }) => ({
       loggedIn: auth.loggedIn,
       username: auth.username,
       user: user.user,
-      repoError: repo.error,
-      shouldCancel: base.shouldCancel,
+      repoError: repo.error
     }),
     dispatch => ({
-      UserActions: bindActionCreators(userActions, dispatch),
-      BaseActions: bindActionCreators(baseActions, dispatch),
+      UserActions: bindActionCreators(userActions, dispatch)
     })
   )(Base)
 );

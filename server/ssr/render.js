@@ -1,5 +1,9 @@
+const fs = require('fs');
+const path = require('path');
 const render = require('./index').default;
 const manifest = require('../../build/asset-manifest.json');
+const reactIndex = path.join(__dirname, '../../build/index.html');
+const indexHtml = fs.readFileSync(reactIndex, { encoding: 'utf8' });
 
 function buildHtml({ html, state, error }) {
   const jsKeys = Object.keys(manifest)
@@ -44,8 +48,14 @@ function buildHtml({ html, state, error }) {
 
 module.exports = async ctx => {
   try {
-    const rendered = await render(ctx);
-    ctx.body = buildHtml(rendered);
+    if(ctx.request.access_token) {
+      const rendered = await render(ctx);
+      ctx.body = buildHtml(rendered);
+      return;
+    }
+
+    ctx.body = indexHtml;
+    
   } catch (e) {
     console.log(e);
     ctx.body = buildHtml({});
