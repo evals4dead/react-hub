@@ -10,8 +10,6 @@ import Router from './components/Router';
 const serverRender = async ctx => {
   const accessToken = ctx.cookies.get('access_token');
 
-  console.log('client access token', accessToken);
-
   const store = configure();
   const promises = [];
 
@@ -23,11 +21,9 @@ const serverRender = async ctx => {
 
   routeConfig.forEach(route => {
     const match = matchPath(url, route);
-    console.log(url);
     if (!match) return;
     const { preload } = route;
     if (!preload) return;
-    // console.log(preload);
     const { params } = match;
 
     const promise = preload(store, params);
@@ -37,7 +33,6 @@ const serverRender = async ctx => {
   let error = null;
 
   try {
-    console.log(promises);
     await Promise.all(promises);
   } catch (e) {
     error = e;

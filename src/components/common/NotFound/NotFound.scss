@@ -2,8 +2,8 @@
 
 .NotFoundWrapper {
   width: 100%;
-  min-height: 100vh;
-  height: 100%;
+  height: calc(100vh - 8rem);
+  // height: calc(100vh);
 
   display: flex;
   align-items: center;

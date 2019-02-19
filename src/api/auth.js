@@ -5,3 +5,5 @@ export const getAccessToken = ({code}) => axios.post('/api/auth/login', {
 	client_secret: process.env.REACT_APP_GITHUB_SECRET_ID,
 	client_id: process.env.REACT_APP_GITHUB_CLIENT_ID
 });
+
+export const logout = () => axios.post('/api/auth/logout', {});

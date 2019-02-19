@@ -55,6 +55,10 @@ class Base extends React.Component {
       }
     }
 
+    if(prevProps.loggedOut !== this.props.loggedOut && this.props.loggedOut) {
+      window.location.replace('/auth/login');
+    } 
+
     // if (prevProps.repoError !== this.props.repoError) {
     //   const { status } = this.props.repoError;
     //   if (status === 404 && this.props.user) {
@@ -74,7 +78,8 @@ export default withRouter(
       loggedIn: auth.loggedIn,
       username: auth.username,
       user: user.user,
-      repoError: repo.error
+      repoError: repo.error,
+      loggedOut: auth.loggedOut
     }),
     dispatch => ({
       UserActions: bindActionCreators(userActions, dispatch)

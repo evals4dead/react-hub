@@ -3,31 +3,22 @@ import { applyPenders } from 'redux-pender';
 import produce from 'immer';
 import * as authAPI from 'api/auth';
 
-const SET_LOGGED_IN = 'auth/SET_LOGGED_IN';
 const GET_ACCESS_TOKEN = 'auth/GET_ACCESS_TOKEN';
+const LOGOUT = 'auth/LOGOUT';
 
 export const authActions = {
-  setLoggedIn: createAction(SET_LOGGED_IN, payload => payload),
   getAccessToken: createAction(GET_ACCESS_TOKEN, authAPI.getAccessToken),
+  logout: createAction(LOGOUT, authAPI.logout)
 };
 
 const initialState = {
   loggedIn: false,
   accessToken: null,
   username: null,
+  loggedOut: false
 };
 
-const reducer = handleActions(
-  {
-    [SET_LOGGED_IN]: (state, action) => {
-      return produce(state, draft => {
-        const { loggedIn } = action.payload;
-        draft.loggedIn = loggedIn;
-      });
-    },
-  },
-  initialState
-);
+const reducer = handleActions({}, initialState);
 
 export default applyPenders(reducer, [
   {
@@ -45,4 +36,12 @@ export default applyPenders(reducer, [
       });
     },
   },
+  {
+    type: LOGOUT,
+    onSuccess: (state, action) => {
+      return produce(state, draft => {
+        draft.loggedOut = true;
+      });
+    }
+  }
 ]);

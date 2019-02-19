@@ -38,3 +38,13 @@ module.exports.login = async ctx => {
     ctx.throw(e, 500);
   }
 };
+
+module.exports.logout = async (ctx) => {
+  try {
+    ctx.request.access_token = null;
+    ctx.cookies.set('access_token', null);
+    ctx.status = 204;
+  } catch(e) {
+    ctx.throw(e, 500);
+  }
+}
