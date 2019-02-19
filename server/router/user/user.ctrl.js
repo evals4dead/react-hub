@@ -1,7 +1,8 @@
 const { createAxios } = require('../../lib/axios');
 
 module.exports.getMyInfo = async ctx => {
-  const accessToken = ctx.cookies.get('accessToken');
+  const { access_token: accessToken } = ctx.request;
+  console.log(accessToken);
   const axios = createAxios({ accessToken });
   try {
     const response = await axios.get('/user');

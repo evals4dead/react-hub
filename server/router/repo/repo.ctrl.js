@@ -2,10 +2,12 @@ const { createAxios } = require('../../lib/axios');
 
 module.exports.repoList = async ctx => {
   // console.log('repo/repolist');
-  console.log('repolist: ', ctx.headers.access_token);
+  const { access_token: accessToken } = ctx.request;
+  console.log('server access token', accessToken);
+  // console.log('repolist: ', ctx.headers.access_token);
   // console.log('repo/repolist', ctx.request.accessToken);
   let { page, per_page } = ctx.query;
-  const axios = createAxios({ accessToken: ctx.headers.access_token });
+  const axios = createAxios({ accessToken });
 
   if (!page || page <= 0) {
     page = 0;
@@ -23,6 +25,7 @@ module.exports.repoList = async ctx => {
     ctx.body = response.data;
     ctx.status = 200;
   } catch (e) {
+    console.log(e);
     const { status } = e.response;
     // console.log('status', status);
     if (status === 404) {
@@ -36,7 +39,9 @@ module.exports.repoList = async ctx => {
 };
 
 module.exports.repo = async ctx => {
-  const accessToken = ctx.cookies.get('accessToken');
+  // const accessToken = ctx.cookies.get('accessToken');
+  const { access_token: accessToken } = ctx.request;
+
   const axios = createAxios({ accessToken });
 
   const { username, reponame } = ctx.params;
@@ -46,6 +51,7 @@ module.exports.repo = async ctx => {
     ctx.body = response.data;
     ctx.status = 200;
   } catch (e) {
+    console.log(e);
     const { status } = e.response;
     if (status === 404) {
       ctx.body = {

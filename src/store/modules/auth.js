@@ -35,10 +35,11 @@ export default applyPenders(reducer, [
     onSuccess: (state, action) => {
       return produce(state, draft => {
         const {
-          data: { logged, username },
+          data: { logged, username, accessToken },
         } = action.payload;
         if (logged) {
           draft.username = username;
+          draft.accessToken = accessToken;
           draft.loggedIn = logged;
         }
       });

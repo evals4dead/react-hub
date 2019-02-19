@@ -2,17 +2,32 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
-import { userActions } from '../store/modules/user';
+import { userActions } from 'store/modules/user';
+import { baseActions } from '../store/modules/base';
+
+let shouldCancel = typeof window !== 'undefined' && window.__PRELOADED_STATE__;
 
 class Base extends React.Component {
   componentDidMount() {
-    const accessToken = localStorage.getItem('accessToken');
-    if (!accessToken) {
+    // this.props.BaseActions.setShouldCancel({ shouldCancel: true });
+    const { history } = this.props;
+    this.unlisten = history.listen(this.handleChange);
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken && !this.props.location.pathname.includes('/auth/login')) {
       this.props.history.push('/auth/login');
       return;
     }
-
     this.getMyInfo();
+  }
+
+  handleChange = location => {
+    console.log('Route has changed!');
+    console.log(location);
+    window.shouldCancel = false;
+  };
+
+  componentWillUnmount() {
+    this.unlisten();
   }
 
   getMyInfo = async () => {
@@ -29,18 +44,20 @@ class Base extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.loggedIn !== this.props.loggedIn) {
       if (this.props.user) {
-        this.props.history.push(`/${this.props.user.login}`);
+        window.location.replace(`/@${this.props.user.login}`);
+        // this.props.history.push(`/@${this.props.user.login}`);
       } else {
-        this.props.history.push(`/${this.props.username}`);
+        window.location.replace(`/@${this.props.username}`);
+        // this.props.history.push(`/@${this.props.username}`);
       }
     }
 
-    if (prevProps.repoError !== this.props.repoError) {
-      const { status } = this.props.repoError;
-      if (status === 404 && this.props.user) {
-        this.props.history.push('/notfound');
-      }
-    }
+    // if (prevProps.repoError !== this.props.repoError) {
+    //   const { status } = this.props.repoError;
+    //   if (status === 404 && this.props.user) {
+    //     this.props.history.push('/notfound');
+    //   }
+    // }
   }
 
   render() {
@@ -50,14 +67,16 @@ class Base extends React.Component {
 
 export default withRouter(
   connect(
-    ({ auth, user, repo }) => ({
+    ({ auth, user, repo, base }) => ({
       loggedIn: auth.loggedIn,
       username: auth.username,
       user: user.user,
       repoError: repo.error,
+      shouldCancel: base.shouldCancel,
     }),
     dispatch => ({
       UserActions: bindActionCreators(userActions, dispatch),
+      BaseActions: bindActionCreators(baseActions, dispatch),
     })
   )(Base)
 );

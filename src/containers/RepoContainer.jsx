@@ -10,6 +10,9 @@ import RepoInfo from 'components/repo/RepoInfo';
 
 class RepoContainer extends Component {
   componentDidMount() {
+    if (window.shouldCancel) {
+      return;
+    }
     this.getRepo();
   }
 

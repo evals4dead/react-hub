@@ -14,35 +14,26 @@ const routes = [
     exact: false,
   },
   {
-    path: '/:username',
+    path: '/@:username',
     component: UserPage,
     exact: true,
     preload: (store, params) => {
-      //   const RepoActions = bindActionCreators(repoActions, store.dispatch);
-      //   const promise1 = RepoActions.repoList({
-      //     page: 1,
-      //     perPage: 10,
-      //     username: params.username,
-      //   });
-      //   const promise2 = RepoActions.nextRepoList({
-      //     page: 2,
-      //     perPage: 10,
-      //     username: params.username,
-      //   });
-      return Promise.all([
-        store.dispatch(repoActions.repoList({ page: 1, perPage: 10, username: params.username })),
-        store.dispatch(
-          repoActions.nextRepoList({
-            page: 2,
-            perPage: 10,
-            username: params.username,
-          })
-        ),
-      ]);
+      const RepoActions = bindActionCreators(repoActions, store.dispatch);
+      const promise1 = RepoActions.repoList({
+        page: 1,
+        perPage: 10,
+        username: params.username,
+      });
+      const promise2 = RepoActions.nextRepoList({
+        page: 2,
+        perPage: 10,
+        username: params.username,
+      });
+      return Promise.all([promise1, promise2]);
     },
   },
   {
-    path: '/:username/:reponame',
+    path: '/@:username/:reponame',
     component: RepoPage,
     exact: true,
     preload: (store, params) => {

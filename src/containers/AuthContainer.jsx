@@ -18,34 +18,30 @@ class AuthContainer extends Component {
       location: { pathname, search },
     } = this.props;
 
-    const accessToken = localStorage.getItem('accessToken');
-    if (accessToken) {
-      return;
-    }
-
     if (pathname === '/auth/login/processing') {
+      console.log('processing...');
       this.setState({
         processing: true,
       });
       const code = search.split('?code=')[1];
 
       if (code) {
+        console.log('process');
         this.loginProcess({ code });
       }
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.user !== this.props.user && this.props.user !== null) {
-      this.props.history.push(`/${this.props.user.login}`);
-    }
-  }
+  // componentDidUpdate(prevProps, prevState) {
+  //   if (prevProps.user !== this.props.user && this.props.user !== null) {
+  //     this.props.history.push(`/${this.props.user.login}`);
+  //   }
+  // }
 
   loginProcess = async ({ code }) => {
+    console.log('login process');
     try {
       await this.getAccessToken({ code });
-      //   await this.getMyInfo({ accessToken: this.props.accessToken });
-      //   this.setLoggedIn();
     } catch (e) {
       console.log(e);
     }
@@ -55,25 +51,12 @@ class AuthContainer extends Component {
     const { AuthActions } = this.props;
     try {
       await AuthActions.getAccessToken({ code });
-      localStorage.setItem('accessToken', this.props.accessToken);
+      localStorage.setItem('access_token', this.props.accessToken);
+      console.log('getAccessToken');
     } catch (e) {
       console.log(e);
     }
   };
-
-  getMyInfo = async ({ accessToken }) => {
-    const { UserActions } = this.props;
-    try {
-      await UserActions.getMyInfo({ accessToken });
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  //   setLoggedIn = () => {
-  //     const { AuthActions } = this.props;
-  //     AuthActions.setLoggedIn({ loggedIn: true });
-  //   };
 
   render() {
     if (this.state.processing) {

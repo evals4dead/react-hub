@@ -17,6 +17,10 @@ class UserPageContainer extends Component {
         perPage: { visible },
       },
     } = this.props;
+
+    if (this.props.shouldCancel) {
+      return;
+    }
     this.getRepoList({ page: currentPage, perPage: visible });
   }
 
@@ -111,11 +115,12 @@ class UserPageContainer extends Component {
 }
 
 export default connect(
-  ({ repo, user }) => ({
+  ({ repo, user, base }) => ({
     repoList: repo.list,
     pagingInfo: repo.pagingInfo,
     nextList: repo.nextList,
     user: user.user,
+    shouldCancel: base.shouldCancel,
   }),
   dispatch => ({
     RepoActions: bindActionCreators(repoActions, dispatch),

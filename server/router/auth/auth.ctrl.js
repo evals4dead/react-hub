@@ -31,6 +31,7 @@ module.exports.login = async ctx => {
     ctx.body = {
       logged: true,
       username: login,
+      accessToken,
     };
     ctx.status = 200;
   } catch (e) {

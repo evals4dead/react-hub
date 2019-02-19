@@ -33,7 +33,8 @@ function buildHtml({ html, state, error }) {
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root">${html}</div>
         <script>
-            window.__PRELOADED_STATE__ = ${JSON.stringify(state)}
+            window.__PRELOADED_STATE__ = ${JSON.stringify(state)};
+            window.shouldCancel = true;
         </script>
        ${jsKeys}
     </body>
