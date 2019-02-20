@@ -29,7 +29,7 @@ class ModalWrapper extends React.Component {
   }
 
   render() {
-    const { visible, hideModal } = this.props;
+    const { visible, hideModal, children } = this.props;
     const { animate } = this.state;
 
     const animation = animate || visible ? 'visible' : 'hidden';
@@ -37,6 +37,7 @@ class ModalWrapper extends React.Component {
     return (
       <div className={cx('ModalWrapper', animation)}>
         <FaTimesCircle className={cx('closeButton')} onClick={hideModal} />
+        {children}
       </div>
     );
   }

@@ -31,7 +31,6 @@ class Base extends React.Component {
 
   getMyInfo = async () => {
     const { UserActions, location } = this.props;
-
     try {
       await UserActions.getMyInfo();
       if (localStorage.getItem('access_token') && location.pathname.includes('/auth/login')) {

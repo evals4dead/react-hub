@@ -1,0 +1,22 @@
+@import '~styles/utils.scss';
+
+.SearchBarWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  input {
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid white;
+    outline: none;
+
+    color: white;
+    width: 20rem;
+
+    font-size: 2rem;
+    padding: 0.5rem;
+  }
+}

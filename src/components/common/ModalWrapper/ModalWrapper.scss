@@ -54,6 +54,7 @@
 
   &.visible {
     display: flex;
+    flex-direction: column;
     animation: pop 0.3s 1;
   }
 
