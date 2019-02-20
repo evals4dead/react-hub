@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import { bindActionCreators } from 'redux';
 import { userActions } from 'store/modules/user';
 
-
 class Base extends React.Component {
   componentDidMount() {
     const { history } = this.props;
@@ -14,8 +13,10 @@ class Base extends React.Component {
       window.location.replace('/auth/login');
       return;
     }
-    
-    this.getMyInfo();
+
+    if (accessToken) {
+      this.getMyInfo();
+    }
   }
 
   handleChange = location => {
@@ -33,7 +34,7 @@ class Base extends React.Component {
 
     try {
       await UserActions.getMyInfo();
-      if(localStorage.getItem('access_token') && location.pathname.includes('/auth/login')) {
+      if (localStorage.getItem('access_token') && location.pathname.includes('/auth/login')) {
         this.props.history.push(`/@${this.props.user.login}`);
         return;
       }
@@ -55,9 +56,9 @@ class Base extends React.Component {
       }
     }
 
-    if(prevProps.loggedOut !== this.props.loggedOut && this.props.loggedOut) {
+    if (prevProps.loggedOut !== this.props.loggedOut && this.props.loggedOut) {
       window.location.replace('/auth/login');
-    } 
+    }
 
     // if (prevProps.repoError !== this.props.repoError) {
     //   const { status } = this.props.repoError;
@@ -79,10 +80,10 @@ export default withRouter(
       username: auth.username,
       user: user.user,
       repoError: repo.error,
-      loggedOut: auth.loggedOut
+      loggedOut: auth.loggedOut,
     }),
     dispatch => ({
-      UserActions: bindActionCreators(userActions, dispatch)
+      UserActions: bindActionCreators(userActions, dispatch),
     })
   )(Base)
 );
