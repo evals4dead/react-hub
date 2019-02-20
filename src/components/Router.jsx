@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { LoginPage, UserPage, RepoPage, NotFoundPage } from 'pages';
 import Base from 'containers/Base';
+import SearchModalContainer from 'containers/SearchModalContainer';
 
 class Router extends Component {
   render() {
@@ -15,6 +16,7 @@ class Router extends Component {
           <Route component={NotFoundPage} />
         </Switch>
         <Base />
+        <SearchModalContainer />
       </>
     );
   }

@@ -5,13 +5,13 @@ import Footer from 'components/common/Footer';
 
 const cx = classnames.bind(styles);
 
-const WholeWrapper = ({children, onLogout, goToMyRepo}) => {
-    return (
-        <div className={cx('WholeWrapper')}>
-            {children}  
-            <Footer onLogout={onLogout} goToMyRepo={goToMyRepo} />
-        </div>
-    );
+const WholeWrapper = ({ children, onLogout, goToMyRepo, openSearchModal }) => {
+  return (
+    <div className={cx('WholeWrapper')}>
+      {children}
+      <Footer onLogout={onLogout} goToMyRepo={goToMyRepo} openSearchModal={openSearchModal} />
+    </div>
+  );
 };
 
 export default WholeWrapper;
